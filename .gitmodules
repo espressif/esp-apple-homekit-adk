@@ -1,0 +1,3 @@
+[submodule "homekit_adk"]
+	path = homekit_adk
+	url = https://github.com/apple/HomeKitADK
