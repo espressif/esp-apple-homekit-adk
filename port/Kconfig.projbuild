@@ -1,0 +1,72 @@
+menu "HomeKit"
+
+    config HAP_MFI_HW_AUTH
+        bool "MFi HW Auth"
+        default n
+        help
+            "Enable to use MFi Authentication Chip"
+
+    menu "MFi I2C"
+
+        config HAP_I2C_SDA_GPIO
+            int "SDA GPIO"
+            default 26
+            help
+                GPIO for SDA - please check schematic carefully
+
+        config HAP_I2C_SCL_GPIO
+            int "SCL GPIO"
+            default 27
+            help
+                GPIO for SCL - please check schematic carefully
+
+        config HAP_I2C_MAX_READ_COUNT
+            int "Max read count"
+            range 50 300
+            default 150
+            help
+                Set the max read count
+
+        choice HAP_IC2_SPEED
+            prompt "Choose Data Rate"
+            default HAP_I2C_DR_400
+            help
+                I2C Data rate
+
+            config HAP_I2C_DR_400
+                bool "400 kbit/s"
+            config HAP_I2C_DR_100
+                bool "100 kbit/s"
+        endchoice
+
+        config HAP_IC2_SPEED
+            int
+            default 400000 if HAP_I2C_DR_400
+            default 100000 if HAP_I2C_DR_100
+
+    endmenu
+
+    choice HAP_LOG_LEVEL
+        prompt "HAP Log Level"
+        default HAP_LOG_LEVEL_DEFAULT
+        help
+            HomeKit Logging Level
+
+        config HAP_LOG_LEVEL_NONE
+            bool "None"
+        config HAP_LOG_LEVEL_DEFAULT
+            bool "Default"
+        config HAP_LOG_LEVEL_INFO
+            bool "Info"
+        config HAP_LOG_LEVEL_DEBUG
+            bool "Debug"
+    endchoice
+
+    config HAP_LOG_LEVEL
+        int
+        default 0 if HAP_LOG_LEVEL_NONE
+        default 1 if HAP_LOG_LEVEL_DEFAULT
+        default 2 if HAP_LOG_LEVEL_INFO
+        default 3 if HAP_LOG_LEVEL_DEBUG
+
+endmenu
