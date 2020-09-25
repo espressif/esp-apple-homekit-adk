@@ -2,7 +2,9 @@
 
 [HomeKit](https://developer.apple.com/homekit/) is a framework developed by Apple for communicating with and controlling connected accessories in a user’s home using iOS devices. This project is a port of Apple's Open Source [HomeKit ADK](https://github.com/apple/HomeKitADK) for ESP32 and ESP32S2. This can be used by any developer to prototype non-commercial smart home accessories.
 
-> Note: If you want to use HomeKit on Espressif chips for commercial purposes, please check [here](https://www.espressif.com/en/products/sdks/esp-homekit-sdk).
+You can also check out the **ESP HomeKit SDK** [here](https://github.com/espressif/esp-homekit-sdk) which is Espressif's implementation of the HomeKit Specifications.
+
+> Note: If you want to use HomeKit for commercial purposes, please check [here](https://www.espressif.com/en/products/sdks/esp-homekit-sdk).
 
 ## Get Started
 
