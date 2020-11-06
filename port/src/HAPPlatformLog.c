@@ -31,13 +31,8 @@
 #include "HAP.h"
 #include "HAPPlatformLog+Init.h"
 
-#ifdef __linux__
-#if !defined(_POSIX_C_SOURCE) || _POSIX_C_SOURCE < 200112L
-#error "This file needs the XSI-compliant version of 'strerror_r'. Set _POSIX_C_SOURCE >= 200112L."
-#endif
-#if defined(_GNU_SOURCE) && _GNU_SOURCE
-#error "This file needs the XSI-compliant version of 'strerror_r'. Do not set _GNU_SOURCE."
-#endif
+#if _POSIX_C_SOURCE >= 200112L && ! _GNU_SOURCE
+#error "This file needs the GNU-specific version of 'strerror_r'."
 #endif
 
 static const HAPLogObject logObject = { .subsystem = kHAPPlatform_LogSubsystem, .category = "Log" };
@@ -53,19 +48,9 @@ void HAPPlatformLogPOSIXError(
     HAPPrecondition(function);
     HAPPrecondition(file);
 
-    HAPError err;
-
     // Get error message.
-    char errorString[256];
-    int e = strerror_r(errorNumber, errorString, sizeof errorString);
-    if (e == EINVAL) {
-        err = HAPStringWithFormat(errorString, sizeof errorString, "Unknown error %d", errorNumber);
-        HAPAssert(!err);
-    } else if (e) {
-        HAPAssert(e == ERANGE);
-        HAPLog(&logObject, "strerror_r error: ERANGE.");
-        return;
-    }
+    char errorStringBuffer[256];
+    char *errorString = strerror_r(errorNumber, errorStringBuffer, sizeof errorStringBuffer);
 
     // Perform logging.
     HAPLogWithType(&logObject, type, "%s:%d:%s - %s @ %s:%d", message, errorNumber, errorString, function, file, line);
