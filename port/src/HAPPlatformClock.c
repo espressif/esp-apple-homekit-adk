@@ -36,14 +36,13 @@ HAPTime HAPPlatformClockGetCurrent(void) {
     HAPTime now;
 #if defined(CLOCK_MONOTONIC_RAW)
     // This clock should be unaffected by frequency or time adjustments.
-
     if (!isInitialized) {
-        HAPLog(&logObject, "Using 'clock_gettime' with 'CLOCK_MONOTONIC_RAW'.");
+        HAPLog(&logObject, "Using 'clock_gettime' with 'CLOCK_MONOTONIC'.");
         isInitialized = true;
     }
 
     struct timespec t;
-    e = clock_gettime(CLOCK_MONOTONIC_RAW, &t);
+    e = clock_gettime(CLOCK_MONOTONIC, &t);
     if (e) {
         int _errno = errno;
         HAPAssert(e == -1);
